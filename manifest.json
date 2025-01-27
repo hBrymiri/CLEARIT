@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Clearit Extension",
+  "version": "1.0",
+  "description": "Automatically delete or archive spam/unopened emails",
+  "permissions": ["identity", "tabs", "activeTab", "scripting", "storage"],
+  "host_permissions": ["https://mail.google.com/*", "https://www.googleapis.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "CLEARIT"
+  },
+  "content_scripts": [
+    {
+      "js": ["contents.js"],
+      "matches": ["https://mail.google.com/*"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["pikaday.min.js"],
+      "matches": ["<all_urls>"]
+    }
+    ],
+
+  "oauth2": {
+    "client_id": "751079653207-f1tvsmfbdbualtjg86118medknlfkm47.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/gmail.modify"]
+
+  }
+}
