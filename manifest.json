@@ -14,7 +14,7 @@
   },
   "content_scripts": [
     {
-      "js": ["contents.js"],
+      "js": ["content.js","pikadayinit.js"],
       "matches": ["https://mail.google.com/*"]
     }
   ],
@@ -29,5 +29,8 @@
     "client_id": "751079653207-f1tvsmfbdbualtjg86118medknlfkm47.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/gmail.modify"]
 
+  },
+  "content_security_policy":{
+    "extension_page":  "script-src 'self'; object-src 'self'"
   }
 }

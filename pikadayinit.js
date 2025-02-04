@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", ()=>{
 var field = document.getElementById('Schedule-date');
 if (field) {
     var picker = new Pikaday({
@@ -7,3 +8,4 @@ if (field) {
 } else {
     console.error("Element with ID 'Schedule-date' not found.");
 }
+})

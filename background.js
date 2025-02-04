@@ -7,7 +7,7 @@ function performGmailAction(action) {
       console.error("OAuth error or no token");
       return;
     }
-    if(!tokken){
+    if(!token){
       console.error("Failed to retrive token");
       return;
     }
@@ -59,15 +59,17 @@ console.log("chrome.storage:", chrome.storage);
 
 chrome.runtime.onInstalled.addListener(()=>{
   console.log("Extension installed");
-  initiliazedSchedule();
+  initializedSchedule();
   console.log("Deafult schedule insitiliazed");
  });
 
+
+
+
 // Notify when the extension is installed and set default schedule
-  function initializedSchedule() {
+  function initiliazedSchedule() {
     if(chrome.storage && chrome.storage.sync){
-  chrome.storage.sync.set(
-    {
+  chrome.storage.sync.set({
     schedule: {
       Days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
       Time: "14:30",
@@ -75,6 +77,7 @@ chrome.runtime.onInstalled.addListener(()=>{
     },
   },
    ()=>{
+    console.log("Data saved to storage");
   console.log("Default schedule initialized.");
 }
 );
@@ -89,11 +92,10 @@ else {
 // Function to check the schedule and execute Gmail actions
 function checkSchedule() {
   chrome.storage.sync.get("schedule", (data) => {
-    if(chrome.runtime.lastError){
-      console.error("Error retrieveing Schedule from storage:", chrome.runtime.lastError.message);
-    return ;}
-   
-    if (data.schedule && data.schedule.Days && data.schedule.Time && data.schedule.action) {
+    if(!data || data.schedule){
+  console.error("Error retrieveing Schedule from storage:", chrome.runtime.lastError.message);
+    return ;
+  }
       const { Days, Time, action } = data.schedule;
      
       const currentDate = new Date()
@@ -110,15 +112,15 @@ function checkSchedule() {
       if (Days.includes(currentDate) && currentTime === Time) {
         performGmailAction(action);
         console.log("Scheduled Action Executed:", action);
+      } else {
+        console.warn("No valid schedule found in storage.");
       }
-    } else {
-      console.warn("No valid schedule found in storage.");
     }
-  });
+  )};
   
   // Start schedule checking
   setInterval(checkSchedule, 60000); // Check every 60 seconds
-}
+
 
 // Inject script when Gmail tabs are updated
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -127,10 +129,12 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       target: { tabId: tabId },
       files: ["gmailPrompt.js","pikadayinit.js"],
     }, () => {
-      if (chrome.runtime.lastError)
+      if (chrome.runtime.lastError){
         console.error("error injecting scripts", chrome.runtime.lastError.message);
-      else
+      }
+      else{
         console.log("scripts injected successfully");
+      }
     });
   }
 });
@@ -175,7 +179,6 @@ chrome.tabs.onUpdated.addListener((tabId,changeInfo,tab)=>{
 } else {
   console.log("script inject succesfully");
 }
-    }
-   )
+    });
   }
 })

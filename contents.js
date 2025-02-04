@@ -26,3 +26,9 @@ if (article) {
 
   (date ?? heading).insertAdjacentElement("afterend", badge);
 }
+const script =document.createElement("script");
+script.src= chrome.runtime.getUrl("pikaday.min.js");
+(document.head || document.documentElement).appendChild(script);
+script.onload = function(){
+  console.log("Pikaday script loaded successfully");
+};
