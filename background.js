@@ -59,15 +59,13 @@ console.log("chrome.storage:", chrome.storage);
 
 chrome.runtime.onInstalled.addListener(()=>{
   console.log("Extension installed");
-  initializedSchedule();
-  console.log("Deafult schedule insitiliazed");
- });
-
-
+  initializedSchedule(); // Corrected the typo
+  console.log("Default schedule initialized");
+});
 
 
 // Notify when the extension is installed and set default schedule
-  function initiliazedSchedule() {
+  function initializedSchedule() {
     if(chrome.storage && chrome.storage.sync){
   chrome.storage.sync.set({
     schedule: {
@@ -75,14 +73,11 @@ chrome.runtime.onInstalled.addListener(()=>{
       Time: "14:30",
       action: "Archive",
     },
-  },
-   ()=>{
+  },()=>{
     console.log("Data saved to storage");
-  console.log("Default schedule initialized.");
-}
-);
-}
-else {
+  console.log("Default scheduleinitialized.");
+});
+} else {
   console.error("chrome.storage.sync is not avaible. Ensure permisson are set in the manifest.");
 }
 }
@@ -93,7 +88,7 @@ else {
 function checkSchedule() {
   chrome.storage.sync.get("schedule", (data) => {
     if(!data || data.schedule){
-  console.error("Error retrieveing Schedule from storage:", chrome.runtime.lastError.message);
+  console.error("Error retrieveing Schedule from storage:", chrome.runtime.lastError?.message);
     return ;
   }
       const { Days, Time, action } = data.schedule;
@@ -169,7 +164,7 @@ chrome.tabs.onUpdated.addListener((tabId,changeInfo,tab)=>{
   console.log("chrome.scripting:", chrome.scripting);
 
   if(changeInfo.status === "complete" && tab.url?.includes("mail.google.com")){
-    console.log('Tab Updated: ${tab.url}');
+    console.log(`Tab Updated: ${tab.url}`);
     chrome.scripting.executeScript({
       target:{tabId:tabId},
       files:["pikadayinit.js"],
