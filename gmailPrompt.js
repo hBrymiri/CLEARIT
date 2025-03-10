@@ -17,31 +17,28 @@ animation: fadeIn 0.5s ease;
 font-family: Arial, sans-serif;
 width: 300px;
 `;
-// asking questions and buttons to container 
-promptContainer.innerHTML = `
-    <div>
-        <h3>Schedule More Actions?</h3>
-        <p>Would you like to set more schedules?</p>
-        <button id="yes-button" style="background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; margin-right: 10px;">Yes</button>
-        <button id="no-button" style="background: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 4px;">No</button>
-    </div>
-`;
-
 }
-// add comatiner to body 
-document.body.appendChild(promptContainer);
+// asking questions and buttons to container 
 
-// adding button functionality
-document.getElementById("yes-button").addEventListener('click', ()=>{
-    // this will trigger pop up html
-    alert("Launching scheduling tool");
-    document.body.removeChild(promptContainer);
-});
+// main congainer for prompt
+const promptContainer= document.createElement("div");
+ const h3 = document.createElement("h3");
+ h3.textContent= " Schedule  More Actions?";
+ 
+ const PlannedAct= document.createElement("PlannedAct");
+ PlannedAct.textContent= "See your planned actions";
 
-document.getElementById("no-button").addEventListener('click', ()=>{
-    // Close the prompt
-    document.body.removeChild(promptContainer);
-});
+ const Yesbtn=document.createElement("Yesbtn");
+ Yesbtn.textContent="Yes";
+ Yesbtn.textContent = "Yes";
+Yesbtn.style.background = "#4CAF50";
+Yesbtn.style.color = "white";
+Yesbtn.style.padding = "10px 20px";
+Yesbtn.style.border = "none";
+Yesbtn.style.borderRadius = "4px";
+Yesbtn.style.marginRight = "10px";
+
+
 
 //adding animation to prompt
 const style = document.createElement("style");

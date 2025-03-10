@@ -14,16 +14,17 @@
   },
   "content_scripts": [
     {
-      "js": ["content.js","pikadayinit.js"],
+      "js": ["content.js"],
       "matches": ["https://mail.google.com/*"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["pikaday.min.js"],
-      "matches": ["<all_urls>"]
+      "resources": ["pikaday.min.js", "pikaday.min.css"],
+      "matches":["<all_urls>"]
     }
     ],
+    
 
   "oauth2": {
     "client_id": "751079653207-f1tvsmfbdbualtjg86118medknlfkm47.apps.googleusercontent.com",
@@ -31,6 +32,6 @@
 
   },
   "content_security_policy":{
-    "extension_page":  "script-src 'self'; object-src 'self'"
+    "extension_pages":  "script-src 'self' 'strict-dynamic' https://cdnjs.cloudflare.com; object-src 'self' https://cdnjs.cloudflare.com;"
   }
 }

@@ -1,20 +1,16 @@
-document.getElementById('action-btn').addEventListener('click', function() {
-    alert('Button cliked!');
 
-});
-document.getElementById('ok-button').addEventListener('click', function(){
+document.getElementById('ok').addEventListener('click', function(){
     const selectedDay = Array.from(document.getElementById('Schedule-Days').selectedOptions).map(option => option.value);
-    const selectTIme = document.getElementById('Schedule-Time').value;
+    const selectTime = document.getElementById('Schedule-Time').value;
     const selectedAction = document.getElementById('action-select').value;
 
     // this means thats is zero char then it ask for fill the fields
-    if(!selectedDay.length == 0 || !selectTIme || !selectedAction){
+    if(!selectedDay.length == 0 || !selectTime || !selectedAction){
         alert('Please fill in fields');
         return ;
     }
-});
-    // save to chrome strg
-    chrome.storage.sync.set({
+       // save to chrome strg
+       chrome.storage.sync.set({
         schedule:{
             days: selectedDay,
             time : selectedTime,
@@ -26,15 +22,17 @@ document.getElementById('ok-button').addEventListener('click', function(){
         }
     
     });
-    // add animation to the popup
-document.getElementById('okbutton').addEventListener('click', function(){
-    console.log(" button clicked");
 });
+ 
+    // add animation to the popup
 
 // will close pop up below 
 document.getElementById("popup").style.display="none";
 
-
+document.addEventListener("DOMComtentloaded",()=>{
+    console.log("Buttons on the page: ", document.querySelectorAll("Button"));
+}
+)
 function togglepopup() {
     let popup = document.getElementById('popup');
     if (popup.style.display === 'none' || popup.style.display === 'empty' || popup.style.display === '') {
@@ -44,9 +42,6 @@ function togglepopup() {
     }
 }
 
-document.getElementById('action-btn').addEventListener('click',function(){
-    togglepopup();
-});
 
 
  function handleAction(request){

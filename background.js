@@ -1,5 +1,3 @@
-
-
 // Function to perform OAuth and Gmail API actions
 function performGmailAction(action) {
   chrome.identity.getAuthToken({ interactive: true }, (token) => {
@@ -7,8 +5,8 @@ function performGmailAction(action) {
       console.error("OAuth error or no token");
       return;
     }
-    if(!token){
-      console.error("Failed to retrive token");
+    if (!token) {
+      console.error("Failed to retrieve token");
       return;
     }
     console.log("Token retrieved:", token);
@@ -54,83 +52,84 @@ function performGmailAction(action) {
       .catch((error) => console.error("Error performing action:", error));
   });
 }
+
 // Notify when the extension is installed
 console.log("chrome.storage:", chrome.storage);
 
-chrome.runtime.onInstalled.addListener(()=>{
+chrome.runtime.onInstalled.addListener(() => {
   console.log("Extension installed");
-  initializedSchedule(); // Corrected the typo
+  initializeSchedule(); // Corrected function name
   console.log("Default schedule initialized");
 });
-
-
 // Notify when the extension is installed and set default schedule
-  function initializedSchedule() {
-    if(chrome.storage && chrome.storage.sync){
-  chrome.storage.sync.set({
-    schedule: {
-      Days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
-      Time: "14:30",
-      action: "Archive",
-    },
-  },()=>{
-    console.log("Data saved to storage");
-  console.log("Default scheduleinitialized.");
-});
-} else {
-  console.error("chrome.storage.sync is not avaible. Ensure permisson are set in the manifest.");
+function initializeSchedule() { // Corrected the function name
+  if (chrome.storage && chrome.storage.sync) {
+    chrome.storage.sync.set(
+      {
+        schedule: {
+          Days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+          Time: "14:30",
+          action: "Archive",
+        },
+      },
+      () => {
+        console.log("Data saved to storage");
+        console.log("Default schedule initialized.");
+      }
+    );
+  } else {
+    console.error("chrome.storage.sync is not available. Ensure permissions are set in the manifest.");
+  }
 }
-}
-
-
 
 // Function to check the schedule and execute Gmail actions
 function checkSchedule() {
   chrome.storage.sync.get("schedule", (data) => {
-    if(!data || data.schedule){
-  console.error("Error retrieveing Schedule from storage:", chrome.runtime.lastError?.message);
-    return ;
-  }
-      const { Days, Time, action } = data.schedule;
-     
-      const currentDate = new Date()
-      .toLocaleString("en-US", { weekday: "long" })
-        .toLowerCase();
-     const currentTime = new Date()
-      .toLocaleTimeString("en-GB", { hour12: false })
-        .substring(0, 5);
-
-      console.log("Current Date:", currentDate);
-      console.log("Current Time:", currentTime);
-      console.log("Schedule Time:", Time);
-
-      if (Days.includes(currentDate) && currentTime === Time) {
-        performGmailAction(action);
-        console.log("Scheduled Action Executed:", action);
-      } else {
-        console.warn("No valid schedule found in storage.");
-      }
+    if (!data || !data.schedule) {
+      console.error("Error retrieving schedule from storage:", chrome.runtime.lastError?.message);
+      return;
     }
-  )};
-  
-  // Start schedule checking
-  setInterval(checkSchedule, 60000); // Check every 60 seconds
+    const { Days, Time, action } = data.schedule;
 
+    const currentDate = new Date()
+      .toLocaleString("en-US", { weekday: "long" })
+      .toLowerCase();
+    const currentTime = new Date()
+      .toLocaleTimeString("en-GB", { hour12: false })
+      .substring(0, 5);
+
+    console.log("Current Date:", currentDate);
+    console.log("Current Time:", currentTime);
+    console.log("Schedule Time:", Time);
+
+    if (Days.includes(currentDate) && currentTime === Time) {
+      performGmailAction(action);
+      console.log("Scheduled Action Executed:", action);
+    } else {
+      console.warn("No valid schedule found in storage.");
+    }
+  });
+}
+
+// Start schedule checking
+setInterval(checkSchedule, 60000); // Check every 60 seconds
 
 // Inject script when Gmail tabs are updated
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (tab.url?.includes("mail.google.com") && changeInfo.status === "complete") {
-    chrome.scripting.executeScript({
-      target: { tabId: tabId },
-      files: ["gmailPrompt.js","pikadayinit.js"],
-    }, () => {
-      if (chrome.runtime.lastError){
-        console.error("error injecting scripts", chrome.runtime.lastError.message);
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        files: ["gmailPrompt.js", "pikadayinit.js"],
+      },
+      () => {
+        if (chrome.runtime.lastError) {
+          console.error("Error injecting scripts", chrome.runtime.lastError.message);
+        } else {
+          console.log("Scripts injected successfully");
+        }
       }
-      else{
-        console.log("scripts injected successfully");
-      }
-    });
+    );
   }
 });
 
@@ -159,21 +158,24 @@ chrome.runtime.onMessage.addListener((message) => {
   }
 });
 
-chrome.tabs.onUpdated.addListener((tabId,changeInfo,tab)=>{
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   console.log("chrome.tabs:", chrome.tabs);
   console.log("chrome.scripting:", chrome.scripting);
 
-  if(changeInfo.status === "complete" && tab.url?.includes("mail.google.com")){
+  if (changeInfo.status === "complete" && tab.url?.includes("mail.google.com")) {
     console.log(`Tab Updated: ${tab.url}`);
-    chrome.scripting.executeScript({
-      target:{tabId:tabId},
-      files:["pikadayinit.js"],
-    }, ()=>{
-      if(chrome.runtime.lastError){
-        console.error("Error injecting script",chrome.runtime.lastError.message);
-} else {
-  console.log("script inject succesfully");
-}
-    });
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        files: ["pikadayinit.js"],
+      },
+      () => {
+        if (chrome.runtime.lastError) {
+          console.error("Error injecting script", chrome.runtime.lastError.message);
+        } else {
+          console.log("Script injected successfully");
+        }
+      }
+    );
   }
-})
+});

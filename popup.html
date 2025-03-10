@@ -38,45 +38,38 @@
 
 <input type = "date" id="Schedule-date">
 <br>
-
-<div id=" popup">
-<button id = " okbutton">Ok</button>
-</div>
-
 <label for="Schedule-time"> Select Time:</label>
 <input type="Time" id="Schedule-time"name="Schedule-Time">
 
-<br>
-
-<!-- FOR OPTION SLEECT-->
-
-<label for="action-select">Action:</label>
-<select id="action-select">
-  <option value="archive">Archive Emails</option>
-  <option value="trash">Trash Emails</option>
+<label for=" action-select">Actions:</label>
+<select id = "action-select"></select>
+<option value =" "> ---Select Action---</option>
+<option valu="archieve">Archieve Emails</option>
+<option valu="trash">Trash Emails</option>
 </select>
-
-
-<button id="ok-button">OK</button>
 <br>
+<button id=" Submit button">Submit</button>
+<div id="error-message" class="error"></div>
+<br>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/pikaday.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", ()=>{
+    var field = document.getElementById('Schedule-date');
+    if (field) {
+        var picker = new Pikaday({
+            field: field,
+            format: 'MM-DD-YYYY',
+        });
+    } else {
+        console.error("Element with ID 'Schedule-date' not found.");
+    }
+    });    
+</script>
+
 
 <!-- this is an api for calender below -->
-<script src=" popup.js"></script>
-<script src = "pikadayinit.js"></script>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/css/pikaday.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/pikaday.min.js"></script>
-
-
-<script>
-    function popup(){
-        var popup =document.getElementById('popup');
-        popup.style.display= 'block';
-    }
-</script>
-</body>
-</html>
-
+<link rel=" stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/pikaday.min.js " 
 
 
 
