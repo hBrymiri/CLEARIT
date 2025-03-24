@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-abcdefgh1234567890...' 'strict-dynamic' https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/pikaday.min.js; object-src 'none'; base-uri 'none';">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLEARIT Extension - Home</title>
     <link rel="stylesheet" href="styles.css">
@@ -51,7 +52,11 @@
 <button id=" Submit button">Submit</button>
 <div id="error-message" class="error"></div>
 <br>
-<script src=" https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/pikaday.min.js"></script>
+<script  nonce ="secure">
+    var s = document.createElement('script')
+s.src="/path/CLEARIT/script.js";
+document.head.appendChild(s);
+     src=" https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.2/pikaday.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", ()=>{
     var field = document.getElementById('Schedule-date');

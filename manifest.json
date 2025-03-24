@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Clearit Extension",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Automatically delete or archive spam/unopened emails",
   "permissions": ["identity", "tabs", "activeTab", "scripting", "storage"],
   "host_permissions": ["https://mail.google.com/*", "https://www.googleapis.com/*"],
